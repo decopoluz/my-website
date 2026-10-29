@@ -752,8 +752,8 @@ function pageZone() {
    MAQOLALAR: repo'dagi maqolalar/ papkasidan o'qiladi.
    Fayl qo'shish = maqola qo'shish. Format: maqolalar/_QOLLANMA.txt
 --------------------------------------------------------------- */
-var ART_REPO = 'abdurakhimovfozilbek6-bit/my-website', ART_DIR = 'maqolalar';
-var ART_API = 'https://api.github.com/repos/' + ART_REPO + '/contents/' + ART_DIR + '?ref=main';
+var ART_REPOS = ['decopoluz/my-website', 'abdurakhimovfozilbek6-bit/my-website'], ART_DIR = 'maqolalar';
+function artApi(i) { return 'https://api.github.com/repos/' + ART_REPOS[i] + '/contents/' + ART_DIR + '?ref=main'; }
 var ART_TTL = 5 * 60 * 1000, artMem = null;
 function artCache(val) {
   try {
@@ -766,8 +766,11 @@ function artFileOk(n) { return /\.(md|txt)$/i.test(n) && n.charAt(0) !== '_' && 
 function artFiles() {
   var c = artCache();
   if (c && c.t && Date.now() - c.t < ART_TTL && c.files) return Promise.resolve(c.files);
-  return fetch(ART_API, { headers: { Accept: 'application/vnd.github+json' } })
-    .then(function (r) { if (r.status === 404) return []; if (!r.ok) throw new Error('api ' + r.status); return r.json(); })
+  function tryRepo(i) {
+    return fetch(artApi(i), { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { if (r.status === 404) return i + 1 < ART_REPOS.length ? tryRepo(i + 1) : []; if (!r.ok) throw new Error('api ' + r.status); return r.json(); });
+  }
+  return tryRepo(0)
     .then(function (arr) {
       var files = (arr || []).filter(function (f) { return f.type === 'file' && artFileOk(f.name); })
         .map(function (f) { return { name: f.name, raw: f.download_url || '' }; });
