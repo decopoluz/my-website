@@ -1,4 +1,4 @@
-DECOPOL PREMIUM — sayt (UZ / RU), v8
+DECOPOL PREMIUM — sayt (UZ / RU), v9
 
 TILLAR (v8 dan boshlab URL orqali):
   O'zbekcha:  https://premium.decopoluzbekistan.uz/franshiza.html
@@ -7,10 +7,13 @@ TILLAR (v8 dan boshlab URL orqali):
   ru/ papkasida faqat kichik HTML fayllar bor — rasm, CSS va JS ildizdagi umumiy fayllardan olinadi.
   Eski ?lang=ru havolalari avtomatik /ru/ ga o'tadi.
 
-HOSTINGGA JOYLASH (premium.decopoluzbekistan.uz papkasi):
-  1) Eski style-v7.css va app-v7.js ni o'chiring.
-  2) Zip'ni yuklab, Extract qiling (ru/ papkasi o'zi yaratiladi).
-  3) .well-known, .htaccess, .user.ini, php.ini, index(old).html ga tegmang.
+JOYLASH: sayt GitHub Pages'da (repo abdurakhimovfozilbek6-bit/my-website, main).
+  Repo'ga yuklangan fayl 1–2 daqiqada saytda chiqadi. Zip ichidagi fayllarni repo'ga yuklang.
+  Eski app-v8.js / style-v8.css ni o'chirish ixtiyoriy.
+
+MAQOLALAR (v9): maqolalar.html — ro'yxat, maqola.html?id=... — maqola.
+  Maqola qo'shish = repo'dagi maqolalar/ papkasiga .txt fayl qo'shish. Format: maqolalar/_QOLLANMA.txt
+  Rasmlar: img/maqolalar/. Sayt papkani GitHub orqali o'zi o'qiydi, ro'yxat qo'lda yangilanmaydi.
 
 RASMLAR: quyidagi nomlar bilan shu papkalarga qo'ying — sayt o'zi topadi.
 (Rasm bo'lmasa, o'rnida rangli fon ko'rinadi.)
@@ -62,7 +65,7 @@ Yetishmaydi (rangli fonda turadi):
   img/collections/*.jpg, img/franshiza/*.jpg
 
 ----- VIDEOLAR (zona va loyiha batafsil sahifalari) -----
-app-v8.js ichida ZVIDEO va CVIDEO degan ikkita ro'yxat bor (hozircha bo'sh).
+app-v9.js ichida ZVIDEO va CVIDEO degan ikkita ro'yxat bor (hozircha bo'sh).
 Video manzilini yozsangiz, o'sha zona/loyiha sahifasida "Video" bo'limi o'zi paydo bo'ladi. Misol:
   var ZVIDEO = { 'lucevista': 'https://.../video.mp4' };
 Zona nomlari: salotto-tv, angolo-caffe, ingresso, entrada, escalera, maestra, lucevista, zonaviva,

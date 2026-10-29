@@ -1,0 +1,49 @@
+MAQOLA QO'SHISH — QO'LLANMA
+(bu fayl saytda ko'rinmaydi: nomi "_" bilan boshlangan fayllar o'tkazib yuboriladi)
+
+1. GitHub'da repo → "maqolalar" papkasi → Add file → Create new file.
+2. Fayl nomi: lotincha, bo'sh joysiz, oxiri .txt. Masalan:
+      2026-10-29-panel-tanlash.txt
+   Nomning boshidagi sana ro'yxatni tartiblashga yordam beradi (shart emas).
+3. Ichiga quyidagi shaklda yozing va "Commit changes" ni bosing.
+4. 5–10 daqiqada saytdagi Maqolalar bo'limida chiqadi. Tahrirlash: faylni ochib qalam belgisini bosing.
+   O'chirish: faylni ochib savatcha belgisini bosing.
+
+RASMLAR: img/maqolalar papkasiga yuklang (repo → img → maqolalar → Add file → Upload files),
+keyin "Rasm:" qatoriga   img/maqolalar/faylnomi.jpg   deb yozing. Tashqi https:// havola ham bo'ladi.
+
+================ NAMUNA (shu yerdan pastini nusxalang) ================
+Sarlavha: Panel tanlashda 5 ta xato
+Sana: 2026-10-29
+Rasm: img/maqolalar/panel-tanlash.jpg
+Qisqacha: Mijozlar eng ko'p yo'l qo'yadigan xatolar va ulardan qanday qochish mumkin.
+---
+Bu yerga maqola matni yoziladi. Bo'sh qator qoldirsangiz, yangi abzats boshlanadi.
+
+## Kichik sarlavha
+Matn davom etadi. **Qalin so'z** ikki yulduzcha orasida yoziladi.
+
+- Ro'yxat bandi
+- Yana bir band
+
+1. Raqamli ro'yxat
+2. Ikkinchi band
+
+> Iqtibos yoki muhim gap shu belgidan keyin yoziladi.
+
+img/maqolalar/ichki-rasm.jpg
+https://youtu.be/VIDEO_ID
+(rasm yoki YouTube havolasi alohida qatorda yozilsa, o'zi joylashadi)
+
+=== RU ===
+Заголовок: 5 ошибок при выборе панелей
+Кратко: Самые частые ошибки клиентов и как их избежать.
+---
+Здесь текст статьи на русском. Правила те же.
+================ NAMUNA TUGADI ================
+
+ESLATMALAR
+- "=== RU ===" dan keyingi qism ruscha sahifada chiqadi. Ruscha qism bo'lmasa, o'zbekcha matn ko'rinadi.
+- Sana ikki ko'rinishda bo'lishi mumkin: 2026-10-29 yoki 29.10.2026.
+- Muallif qo'shmoqchi bo'lsangiz:  Muallif: Ism Familiya  (ixtiyoriy).
+- "Rasm:" bo'lmasa, kartochkada oddiy fon turadi, maqola baribir chiqadi.
