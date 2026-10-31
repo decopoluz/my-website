@@ -2443,3 +2443,40 @@ footer {
 .hero::before {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0));
 }
+
+/* Maqola sahifasi: uzun sarlavha uchun */
+body[data-page="article"] .dhero h1 {
+  font-size: clamp(26px, 5.5vw, 56px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  max-width: 900px;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+body[data-page="article"] .dhero {
+  min-height: 0;
+  padding-top: 120px; /* menyu ustiga chiqib ketmasligi uchun */
+  padding-bottom: 40px;
+  align-items: flex-end;
+}
+
+/* Rasm ustida matn o'qilishi uchun qorayish */
+body[data-page="article"] .dhero {
+  position: relative;
+}
+body[data-page="article"] .dhero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.65),
+    rgba(0, 0, 0, 0.15) 70%
+  );
+  pointer-events: none;
+}
+body[data-page="article"] .dhero .dwrap {
+  position: relative;
+  z-index: 1;
+}
