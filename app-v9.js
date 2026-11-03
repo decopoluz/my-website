@@ -1466,8 +1466,11 @@
   /* ---------------------------------------------------------------
    Ichki (detal) sahifalar
 --------------------------------------------------------------- */
-  function getId() {
-    return new URLSearchParams(location.search).get("id");
+ function getId() {
+    var q = new URLSearchParams(location.search).get("id");
+    if (q) return q;
+    var m = /\/maqola-([^\/]+)\.html$/.exec(location.pathname);
+    return m ? decodeURIComponent(m[1]) : null;
   }
   function backLink(href, label) {
     return (
@@ -4417,7 +4420,7 @@
     flushL();
     return out;
   }
-  function artCard(a) {
+ function artCard(a) {
     var x = X[lang],
       v = a[lang],
       ex =
@@ -4428,22 +4431,23 @@
     var im = v.image
       ? " style=\"background-image:url('" + esc(asset(v.image)) + "')\""
       : "";
+    var href = "maqola-" + encodeURIComponent(a.id) + ".html";
     return (
-      '<article class="akc"><a class="im" href="maqola.html?id=' +
-      encodeURIComponent(a.id) +
+      '<article class="akc"><a class="im" href="' +
+      href +
       '"' +
       im +
       "></a>" +
       '<div class="ab">' +
       (v.date ? "<time>" + esc(fmtDate(v.date)) + "</time>" : "") +
-      '<h3><a href="maqola.html?id=' +
-      encodeURIComponent(a.id) +
+      '<h3><a href="' +
+      href +
       '">' +
       esc(v.title) +
       "</a></h3>" +
       (ex ? "<p>" + esc(ex) + "</p>" : "") +
-      '<a class="more" href="maqola.html?id=' +
-      encodeURIComponent(a.id) +
+      '<a class="more" href="' +
+      href +
       '">' +
       x.artRead +
       " " +
