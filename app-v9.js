@@ -1466,7 +1466,7 @@
   /* ---------------------------------------------------------------
    Ichki (detal) sahifalar
 --------------------------------------------------------------- */
- function getId() {
+  function getId() {
     var q = new URLSearchParams(location.search).get("id");
     if (q) return q;
     var m = /\/maqola-([^\/]+)\.html$/.exec(location.pathname);
@@ -4420,7 +4420,7 @@
     flushL();
     return out;
   }
- function artCard(a) {
+  function artCard(a) {
     var x = X[lang],
       v = a[lang],
       ex =
@@ -4813,6 +4813,212 @@
 
   setAlternates();
   render();
+
+  /* ===== BOG'LANISH FORMASI (Telegramga yuboradi) ===== */
+  (function () {
+    if (PAGE !== "contact") return;
+
+    var TG_TOKEN = "9156689282:AAFltn7CVDQokazmx4NewA-22tzsujwDVC8"; // BotFather bergan token
+    var TG_CHAT_ID = "-5307849946"; // chat_id (guruh bo'lsa minus bilan)
+
+    var FT = {
+      uz: {
+        h: "Savol yoki takliflaringizni yuboring",
+        name: "Ism va familiya",
+        phone: "+998 __ ___ __ __",
+        msg: "Xabaringiz",
+        send: "Yuborish",
+        sending: "Yuborilmoqda...",
+        ok: "Rahmat! Arizangiz qabul qilindi, tez orada bog'lanamiz.",
+        err: "Xatolik yuz berdi. Qayta urinib ko'ring yoki +998 55 055 22 33 ga qo'ng'iroq qiling.",
+        badName: "Ismingizni kiriting.",
+        badPhone: "Telefon raqamini to'liq kiriting.",
+      },
+      ru: {
+        h: "Отправьте ваш вопрос или предложение",
+        name: "Имя и фамилия",
+        phone: "+998 __ ___ __ __",
+        msg: "Ваше сообщение",
+        send: "Отправить",
+        sending: "Отправка...",
+        ok: "Спасибо! Заявка принята, скоро свяжемся с вами.",
+        err: "Произошла ошибка. Попробуйте ещё раз или позвоните: +998 55 055 22 33.",
+        badName: "Введите ваше имя.",
+        badPhone: "Введите номер телефона полностью.",
+      },
+    };
+    var f = FT[lang];
+
+    var css = [
+      ".cform{width:100%;max-width:none;margin:48px 0;display:grid;gap:22px;position:relative}",
+      ".cform h2{margin:0 0 14px;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-.03em;font-weight:700;color:#2b2b2b;text-align:center}",
+      '.cform input[name="fname"],.cform input[name="phone"],.cform textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:#2b2b2b;padding:16px 20px;background:#f4f4f4;border:1px solid #e8e8e8;border-radius:16px}',
+      ".cform textarea{min-height:124px;resize:vertical}",
+      ".cform ::placeholder{color:#9a9a9a;opacity:1}",
+      ".cform input:focus,.cform textarea:focus{outline:2px solid #c1ab84;outline-offset:1px;background:#fff}",
+      ".cform-btn{position:relative;width:100%;height:74px;border:1px solid #d9c9a8;border-radius:999px;cursor:pointer;background:#c1ab84;color:#fff;font:inherit;font-size:22px;display:flex;align-items:center;justify-content:center;gap:16px;transition:filter .2s}",
+      ".cform-btn:hover{filter:brightness(1.05)}",
+      ".cform-btn:disabled{opacity:.65;cursor:wait}",
+      ".cform-btn .dot{width:50px;height:50px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center}",
+      ".cform-btn .dot svg{width:22px;height:22px}",
+      ".cform-msg{margin:0;min-height:1.4em;font-size:15px;text-align:center}",
+      ".cform-msg.ok{color:#1a7f37}",
+      ".cform-msg.bad{color:#c62828}",
+      "@media(max-width:600px){.cform-btn{height:64px;font-size:19px}.cform-btn .dot{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:50px;height:50px}}",
+    ].join("");
+
+    var grid = document.querySelector(".cgrid2");
+    if (!grid || document.getElementById("cform")) return;
+
+    var st = document.createElement("style");
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    grid.insertAdjacentHTML(
+      "afterend",
+      '<form class="cform" id="cform" novalidate>' +
+        "<h2>" +
+        f.h +
+        "</h2>" +
+        '<input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">' +
+        '<input type="text" name="fname" placeholder="' +
+        esc(f.name) +
+        '" aria-label="' +
+        esc(f.name) +
+        '" autocomplete="name" maxlength="100">' +
+        '<input type="tel" name="phone" placeholder="' +
+        esc(f.phone) +
+        '" aria-label="Telefon" autocomplete="tel" inputmode="tel">' +
+        '<textarea name="message" rows="4" placeholder="' +
+        esc(f.msg) +
+        '" aria-label="' +
+        esc(f.msg) +
+        '" maxlength="1000"></textarea>' +
+        '<button class="cform-btn" type="submit"><span class="t">' +
+        f.send +
+        '</span><span class="dot">' +
+        ic("i-arrow") +
+        "</span></button>" +
+        '<p class="cform-msg" id="cformMsg" role="status" aria-live="polite"></p>' +
+        "</form>",
+    );
+
+    var form = document.getElementById("cform");
+    var msg = document.getElementById("cformMsg");
+    var btn = form.querySelector(".cform-btn");
+    var label = btn.querySelector(".t");
+    var nameEl = form.querySelector('[name="fname"]');
+    var phoneEl = form.querySelector('[name="phone"]');
+    var textEl = form.querySelector('[name="message"]');
+    var hpEl = form.querySelector('[name="hp"]');
+
+    function maskPhone(v) {
+      var d = String(v).replace(/\D/g, "");
+      if (d.indexOf("998") === 0) d = d.slice(3);
+      d = d.slice(0, 9);
+      var o = "+998";
+      if (d.length) o += " " + d.slice(0, 2);
+      if (d.length > 2) o += " " + d.slice(2, 5);
+      if (d.length > 5) o += " " + d.slice(5, 7);
+      if (d.length > 7) o += " " + d.slice(7, 9);
+      return o;
+    }
+    function tgEsc(t) {
+      return String(t)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+    function say(text, cls, show) {
+      msg.textContent = text;
+      msg.className = "cform-msg " + (cls || "");
+      if (show) msg.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    phoneEl.addEventListener("focus", function () {
+      if (!phoneEl.value) phoneEl.value = "+998 ";
+    });
+    phoneEl.addEventListener("blur", function () {
+      if (phoneEl.value.replace(/\D/g, "").length <= 3) phoneEl.value = "";
+    });
+    phoneEl.addEventListener("input", function () {
+      phoneEl.value = maskPhone(phoneEl.value);
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      console.log("Forma yuborildi");
+
+      var name = nameEl.value.trim();
+      var phone = phoneEl.value;
+      var text = textEl.value.trim();
+
+      if (name.length < 2) {
+        say(f.badName, "bad", true);
+        alert(f.badName);
+        nameEl.focus();
+        return;
+      }
+      if (phone.replace(/\D/g, "").length < 12) {
+        say(f.badPhone, "bad", true);
+        alert(f.badPhone);
+        phoneEl.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      label.textContent = f.sending;
+      say("");
+
+      var body =
+        "🆕 <b>Decopol saytidan yangi ariza</b>\n\n" +
+        "👤 <b>Ism:</b> " +
+        tgEsc(name) +
+        "\n" +
+        "📞 <b>Telefon:</b> " +
+        tgEsc(phone) +
+        "\n" +
+        "💬 <b>Xabar:</b> " +
+        tgEsc(text || "-") +
+        "\n" +
+        "🌐 <b>Til:</b> " +
+        lang.toUpperCase() +
+        "\n" +
+        "🔗 " +
+        tgEsc(location.href);
+
+      fetch("https://api.telegram.org/bot" + TG_TOKEN + "/sendMessage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: TG_CHAT_ID,
+          text: body,
+          parse_mode: "HTML",
+          disable_web_page_preview: true,
+        }),
+      })
+        .then(function (r) {
+          return r.json();
+        })
+        .then(function (j) {
+          console.log("Telegram javobi:", j);
+          if (!j.ok) throw new Error(j.description || "fail");
+          form.reset();
+          say(f.ok, "ok", true);
+          alert(f.ok);
+        })
+        .catch(function (err) {
+          console.log("Telegram xato:", err);
+          var t = f.err + " (" + (err && err.message ? err.message : "") + ")";
+          say(t, "bad", true);
+          alert(t);
+        })
+        .then(function () {
+          btn.disabled = false;
+          label.textContent = f.send;
+        });
+    });
+  })();
 })();
 
 (function () {
