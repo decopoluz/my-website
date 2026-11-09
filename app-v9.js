@@ -4819,7 +4819,7 @@
     if (PAGE !== "contact") return;
 
     var TG_TOKEN = "9156689282:AAFltn7CVDQokazmx4NewA-22tzsujwDVC8"; // BotFather bergan token
-    var TG_CHAT_ID = "-5307849946"; // chat_id (guruh bo'lsa minus bilan)
+    var TG_CHAT_ID = "-1004408542767"; // Superguruhga o'tgani uchun -100 qo'shildi
 
     var FT = {
       uz: {
