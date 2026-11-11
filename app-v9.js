@@ -928,7 +928,7 @@
       '<a class="cta ' +
       cls +
       '" href="' +
-      (href || "tel:+998550552233") +
+      (href || "contact.html") +
       '"><span>' +
       label +
       '</span><span class="dot">' +
@@ -4850,7 +4850,7 @@
     var f = FT[lang];
 
     var css = [
-      ".cform{width:100%;max-width:none;margin:48px 0;display:grid;gap:22px;position:relative}",
+      ".cform{width:100%;max-width:none;margin:40px 0 56px;display:grid;gap:22px;position:relative}",
       ".cform h2{margin:0 0 14px;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-.03em;font-weight:700;color:#2b2b2b;text-align:center}",
       '.cform input[name="fname"],.cform input[name="phone"],.cform textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;color:#2b2b2b;padding:16px 20px;background:#f4f4f4;border:1px solid #e8e8e8;border-radius:16px}',
       ".cform textarea{min-height:124px;resize:vertical}",
@@ -4865,6 +4865,17 @@
       ".cform-msg.ok{color:#1a7f37}",
       ".cform-msg.bad{color:#c62828}",
       "@media(max-width:600px){.cform-btn{height:64px;font-size:19px}.cform-btn .dot{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:50px;height:50px}}",
+      'body[data-page="contact"] .dp.dh>h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
+      ".cpop{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px;background:rgba(20,20,20,.45);backdrop-filter:blur(6px);opacity:0;transition:opacity .2s}",
+      ".cpop.in{opacity:1}.cpop.out{opacity:0}",
+      ".cpop-box{width:100%;max-width:420px;background:#fff;border-radius:28px;padding:36px 28px 28px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.25);transform:translateY(16px) scale(.96);transition:transform .25s}",
+      ".cpop.in .cpop-box{transform:none}",
+      ".cpop-ico{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center}",
+      ".cpop-ico.ok{background:#f3ecde;color:#a88f5f}.cpop-ico.bad{background:#fdeaea;color:#c62828}",
+      ".cpop-ico svg{width:38px;height:38px}",
+      ".cpop-box h3{margin:0 0 8px;font-size:24px;color:#2b2b2b}",
+      ".cpop-box p{margin:0 0 24px;font-size:16px;line-height:1.5;color:#666}",
+      ".cpop-btn{width:100%;height:54px;border:0;border-radius:999px;background:#c1ab84;color:#fff;font:inherit;font-size:17px;cursor:pointer}",
     ].join("");
 
     var grid = document.querySelector(".cgrid2");
@@ -4875,7 +4886,7 @@
     document.head.appendChild(st);
 
     grid.insertAdjacentHTML(
-      "afterend",
+      "beforebegin",
       '<form class="cform" id="cform" novalidate>' +
         "<h2>" +
         f.h +
@@ -5023,7 +5034,7 @@
 
 (function () {
   var a = document.createElement("a");
-  a.href = "tel:+998550552233";
+  a.href = "contact.html";
   a.className = "call-btn";
   a.setAttribute("aria-label", "Qo'ng'iroq qilish");
   a.innerHTML =
