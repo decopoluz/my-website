@@ -4798,6 +4798,8 @@
       product: pageProduct,
       articles: pageArticles,
       article: pageArticle,
+      thanks: pageThanks,
+      article: pageArticle,
     };
     app.innerHTML = (pages[PAGE] || pageHome)();
     if (DETAIL[PAGE]) {
@@ -4813,6 +4815,53 @@
 
   setAlternates();
   render();
+
+  function pageThanks() {
+    var TH = {
+      uz: {
+        t: "Rahmat!",
+        p: "Arizangiz qabul qilindi. Mutaxassisimiz tez orada siz bilan bog'lanadi.",
+        w: "Shoshilinch bo'lsa, qo'ng'iroq qiling:",
+        home: "Bosh sahifaga",
+        art: "Maqolalarni o'qish",
+      },
+      ru: {
+        t: "Спасибо!",
+        p: "Ваша заявка принята. Наш специалист скоро свяжется с вами.",
+        w: "Если срочно, позвоните:",
+        home: "На главную",
+        art: "Читать статьи",
+      },
+    }[lang];
+    var css =
+      ".thx{min-height:72vh;display:grid;place-items:center;text-align:center;padding:150px 20px 80px}" +
+      ".thx-in{max-width:560px}" +
+      ".thx-ico{width:96px;height:96px;margin:0 auto 26px;border-radius:50%;background:#f3ecde;color:#a88f5f;display:grid;place-items:center}" +
+      ".thx-ico svg{width:46px;height:46px}" +
+      ".thx h1{margin:0 0 14px;font-size:clamp(40px,7vw,72px);line-height:1.05;letter-spacing:-.03em}" +
+      ".thx p{margin:0 0 10px;font-size:18px;line-height:1.5;opacity:.75}" +
+      ".thx-tel{display:inline-block;margin:6px 0 30px;font-size:22px;font-weight:600;text-decoration:none;color:inherit}" +
+      ".thx-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}";
+    return (
+      "<style>" +
+      css +
+      '</style><section class="thx"><div class="thx-in">' +
+      '<div class="thx-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>' +
+      "<h1>" +
+      TH.t +
+      "</h1><p>" +
+      TH.p +
+      "</p><p>" +
+      TH.w +
+      "</p>" +
+      '<a class="thx-tel" href="tel:+998550552233">+998 55 055 22 33</a>' +
+      '<div class="thx-btns">' +
+      cta("tan", TH.home, "./") +
+      cta("white", TH.art, "maqolalar.html") +
+      "</div>" +
+      "</div></section>"
+    );
+  }
 
   /* ===== BOG'LANISH FORMASI (Telegramga yuboradi) ===== */
   (function () {
@@ -4958,7 +5007,6 @@
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      console.log("Forma yuborildi");
 
       var name = nameEl.value.trim();
       var phone = phoneEl.value;
@@ -4966,13 +5014,11 @@
 
       if (name.length < 2) {
         say(f.badName, "bad", true);
-        alert(f.badName);
         nameEl.focus();
         return;
       }
       if (phone.replace(/\D/g, "").length < 12) {
         say(f.badPhone, "bad", true);
-        alert(f.badPhone);
         phoneEl.focus();
         return;
       }
@@ -4998,6 +5044,8 @@
         "🔗 " +
         tgEsc(location.href);
 
+      var sent = false;
+
       fetch("https://api.telegram.org/bot" + TG_TOKEN + "/sendMessage", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -5012,19 +5060,17 @@
           return r.json();
         })
         .then(function (j) {
-          console.log("Telegram javobi:", j);
           if (!j.ok) throw new Error(j.description || "fail");
+          sent = true;
           form.reset();
-          say(f.ok, "ok", true);
-          alert(f.ok);
+          location.href = IS_RU ? "/ru/thanks.html" : "/thanks.html";
         })
         .catch(function (err) {
           console.log("Telegram xato:", err);
-          var t = f.err + " (" + (err && err.message ? err.message : "") + ")";
-          say(t, "bad", true);
-          alert(t);
+          say(f.err, "bad", true);
         })
         .then(function () {
+          if (sent) return; // sahifa o'tib ketmoqda, tugmani qayta yoqmaymiz
           btn.disabled = false;
           label.textContent = f.send;
         });
